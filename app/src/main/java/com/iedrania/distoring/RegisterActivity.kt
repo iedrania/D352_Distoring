@@ -1,12 +1,21 @@
 package com.iedrania.distoring
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
+import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.iedrania.distoring.databinding.ActivityRegisterBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityRegisterBinding
 
     private lateinit var registerButton: SubmitButton
     private lateinit var nameEditText: NameEditText
@@ -15,12 +24,13 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        registerButton = findViewById(R.id.register_button)
-        nameEditText = findViewById(R.id.ed_register_name)
-        emailEditText = findViewById(R.id.ed_register_email)
-        passwordEditText = findViewById(R.id.ed_register_password)
+        registerButton = binding.registerButton
+        nameEditText = binding.edRegisterName
+        emailEditText = binding.edRegisterEmail
+        passwordEditText = binding.edRegisterPassword
 
         setRegisterButtonEnable()
 
@@ -58,11 +68,44 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
         registerButton.setOnClickListener {
-            Toast.makeText(
-                this@RegisterActivity,
-                "${nameEditText.text} ${emailEditText.text} ${passwordEditText.text}",
-                Toast.LENGTH_SHORT
-            ).show()
+            postRegister(
+                nameEditText.text.toString(),
+                emailEditText.text.toString(),
+                passwordEditText.text.toString()
+            )
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
+    private fun postRegister(name: String, email: String, password: String) {
+        showLoading(true)
+        val client = ApiConfig.getApiService().postRegister(name, email, password)
+        client.enqueue(object : Callback<RegisterResponse> {
+            override fun onResponse(
+                call: Call<RegisterResponse>, response: Response<RegisterResponse>
+            ) {
+                showLoading(false)
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null) {
+                    // TODO register berhasil
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 
@@ -74,5 +117,9 @@ class RegisterActivity : AppCompatActivity() {
             .isNotBlank() && emailResult != null && emailResult.toString()
             .isNotBlank() && passwordResult != null && passwordResult.toString()
             .isNotBlank() && passwordResult.toString().length >= 8
+    }
+
+    companion object {
+        private const val TAG = "RegisterActivity"
     }
 }

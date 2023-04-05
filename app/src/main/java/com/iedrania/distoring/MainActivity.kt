@@ -2,43 +2,75 @@ package com.iedrania.distoring
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iedrania.distoring.databinding.ActivityMainBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val list = ArrayList<Story>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvStories.setHasFixedSize(true)
+        supportActionBar?.title = ""
 
-        list.addAll(getListStories())
-        showRecyclerList()
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvStories.layoutManager = layoutManager
+        findStories()
     }
 
-    private fun getListStories(): ArrayList<Story> {
-        val listStory = ArrayList<Story>()
-        val story = Story(
-            "", "", "", ""
-        )
-        listStory.add(story)
-        return listStory
+    private fun findStories() {
+        showLoading(true)
+        val client = ApiConfig.getApiService().getStories()
+        client.enqueue(object : Callback<StoryResponse> {
+            override fun onResponse(
+                call: Call<StoryResponse>, response: Response<StoryResponse>
+            ) {
+                showLoading(false)
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        setStoryData(responseBody.listStory)
+                    }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
     }
 
-    private fun showRecyclerList() {
-        binding.rvStories.layoutManager = LinearLayoutManager(this)
-        val storyAdapter = StoryAdapter(list)
-        binding.rvStories.adapter = storyAdapter
+    private fun setStoryData(listStory: List<Story>) {
+        val adapter = StoryAdapter(listStory)
+        binding.rvStories.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

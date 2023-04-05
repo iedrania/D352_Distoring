@@ -3,6 +3,8 @@ package com.iedrania.distoring
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.iedrania.distoring.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
@@ -14,6 +16,8 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val story = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(EXTRA_STORY, Story::class.java)
         } else {
@@ -21,8 +25,13 @@ class DetailActivity : AppCompatActivity() {
         }
 
         if (story != null) {
-            val text = "${story.name} ${story.photoURL} ${story.description} ${story.createdAt}"
-            binding.tvObject.text = text
+            binding.tvDetailDate.text = story.createdAt
+            binding.tvDetailName.text = story.name
+            Glide.with(this@DetailActivity)
+                .load(story.photoURL)
+                .transform(RoundedCorners(32))
+                .into(binding.ivDetailPhoto)
+            binding.tvDetailDescription.text = story.description
         }
     }
 
