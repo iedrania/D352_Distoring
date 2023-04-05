@@ -29,13 +29,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val emailResult = emailEditText.text
-                val passwordResult = passwordEditText.text
-                if (emailResult != null && passwordResult != null && emailResult.toString()
-                        .isNotBlank() && passwordResult.toString().isNotBlank()
-                ) {
-                    setRegisterButtonEnable()
-                }
+                setRegisterButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -46,13 +40,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val nameResult = nameEditText.text
-                val passwordResult = passwordEditText.text
-                if (nameResult != null && passwordResult != null && nameResult.toString()
-                        .isNotBlank() && passwordResult.toString().isNotBlank()
-                ) {
-                    setRegisterButtonEnable()
-                }
+                setRegisterButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -63,13 +51,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val nameResult = nameEditText.text
-                val emailResult = emailEditText.text
-                if (nameResult != null && emailResult != null && nameResult.toString()
-                        .isNotBlank() && emailResult.toString().isNotBlank()
-                ) {
-                    setRegisterButtonEnable()
-                }
+                setRegisterButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -90,6 +72,7 @@ class RegisterActivity : AppCompatActivity() {
         val passwordResult = passwordEditText.text
         registerButton.isEnabled = nameResult != null && nameResult.toString()
             .isNotBlank() && emailResult != null && emailResult.toString()
-            .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
+            .isNotBlank() && passwordResult != null && passwordResult.toString()
+            .isNotBlank() && passwordResult.toString().length >= 8
     }
 }

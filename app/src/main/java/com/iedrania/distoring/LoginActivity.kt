@@ -27,10 +27,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val passwordResult = passwordEditText.text
-                if (passwordResult != null && passwordResult.toString().isNotBlank()) {
-                    setLoginButtonEnable()
-                }
+                setLoginButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -41,10 +38,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val emailResult = emailEditText.text
-                if (emailResult != null && emailResult.toString().isNotBlank()) {
-                    setLoginButtonEnable()
-                }
+                setLoginButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {

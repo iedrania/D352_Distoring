@@ -48,6 +48,7 @@ class PasswordEditText : AppCompatEditText, View.OnTouchListener {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 transformationMethod = PasswordTransformationMethod.getInstance()
                 if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
+                if (s.toString().length < 8) error = context.getString(R.string.password_error)
             }
 
             override fun afterTextChanged(s: Editable) {
