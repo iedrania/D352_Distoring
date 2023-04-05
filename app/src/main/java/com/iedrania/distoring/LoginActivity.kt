@@ -60,7 +60,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setLoginButtonEnable() {
-        val result = passwordEditText.text
-        loginButton.isEnabled = result != null && result.toString().isNotBlank()
+        val emailResult = emailEditText.text
+        val passwordResult = passwordEditText.text
+        loginButton.isEnabled = emailResult != null && emailResult.toString()
+            .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
     }
 }

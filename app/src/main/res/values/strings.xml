@@ -3,4 +3,6 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="name_hint">Jane Doe</string>
+    <string name="password_hint">********</string>
+    <string name="email_hint">example@domain.com</string>
 </resources>

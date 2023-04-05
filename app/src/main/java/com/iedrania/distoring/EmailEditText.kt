@@ -31,7 +31,6 @@ class EmailEditText : AppCompatEditText, View.OnTouchListener {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        hint = "example@domain.com"
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
