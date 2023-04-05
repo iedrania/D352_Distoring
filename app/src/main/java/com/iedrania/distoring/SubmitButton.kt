@@ -8,7 +8,7 @@ import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 
-class LoginButton : AppCompatButton {
+class SubmitButton : AppCompatButton {
 
     private lateinit var enabledBackground: Drawable
     private lateinit var disabledBackground: Drawable
@@ -34,7 +34,6 @@ class LoginButton : AppCompatButton {
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = context.getString(R.string.login)
     }
 
     private fun init() {

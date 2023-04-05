@@ -8,7 +8,7 @@ import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginButton: LoginButton
+    private lateinit var loginButton: SubmitButton
     private lateinit var emailEditText: EmailEditText
     private lateinit var passwordEditText: PasswordEditText
 
