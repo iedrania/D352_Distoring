@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iedrania.distoring.R
+import com.iedrania.distoring.data.model.Story
+import com.iedrania.distoring.data.model.StoryResponse
+import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback

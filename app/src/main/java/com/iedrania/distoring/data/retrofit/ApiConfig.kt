@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.data.retrofit
 
 import androidx.viewbinding.BuildConfig
 import okhttp3.OkHttpClient

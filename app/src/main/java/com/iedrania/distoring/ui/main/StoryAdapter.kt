@@ -1,11 +1,13 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.main
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.iedrania.distoring.data.model.Story
 import com.iedrania.distoring.databinding.ItemStoryBinding
+import com.iedrania.distoring.ui.detail.DetailActivity
 
 class StoryAdapter(private val listStory: List<Story>) :
     RecyclerView.Adapter<StoryAdapter.ViewHolder>() {

@@ -1,10 +1,14 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import com.iedrania.distoring.ui.components.EmailEditText
+import com.iedrania.distoring.ui.components.PasswordEditText
+import com.iedrania.distoring.R
+import com.iedrania.distoring.ui.components.SubmitButton
 
 class LoginActivity : AppCompatActivity() {
 

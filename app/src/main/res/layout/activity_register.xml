@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".ui.register.RegisterActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <com.iedrania.distoring.NameEditText
+    <com.iedrania.distoring.ui.components.NameEditText
         android:id="@+id/ed_register_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.iedrania.distoring.EmailEditText
+    <com.iedrania.distoring.ui.components.EmailEditText
         android:id="@+id/ed_register_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ed_register_name" />
 
-    <com.iedrania.distoring.PasswordEditText
+    <com.iedrania.distoring.ui.components.PasswordEditText
         android:id="@+id/ed_register_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ed_register_email" />
 
-    <com.iedrania.distoring.SubmitButton
+    <com.iedrania.distoring.ui.components.SubmitButton
         android:id="@+id/register_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

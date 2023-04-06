@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.data.model
 
 data class RegisterResponse(
     val message: String

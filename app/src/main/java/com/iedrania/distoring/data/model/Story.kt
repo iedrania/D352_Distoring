@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,5 +1,8 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.data.retrofit
 
+import com.iedrania.distoring.data.model.LoginResponse
+import com.iedrania.distoring.data.model.RegisterResponse
+import com.iedrania.distoring.data.model.StoryResponse
 import retrofit2.Call
 import retrofit2.http.*
 

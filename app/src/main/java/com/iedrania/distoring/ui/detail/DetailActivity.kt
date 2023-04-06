@@ -1,10 +1,11 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.detail
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.iedrania.distoring.data.model.Story
 import com.iedrania.distoring.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {

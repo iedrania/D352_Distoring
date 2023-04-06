@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.register
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,12 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.iedrania.distoring.ui.components.EmailEditText
+import com.iedrania.distoring.ui.components.NameEditText
+import com.iedrania.distoring.ui.components.PasswordEditText
+import com.iedrania.distoring.ui.components.SubmitButton
+import com.iedrania.distoring.data.model.RegisterResponse
+import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityRegisterBinding
 import retrofit2.Call
 import retrofit2.Callback

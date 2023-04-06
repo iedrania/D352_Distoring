@@ -1,4 +1,4 @@
-package com.iedrania.distoring
+package com.iedrania.distoring.ui.components
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,8 +10,9 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import com.iedrania.distoring.R
 
-class NameEditText : AppCompatEditText, View.OnTouchListener {
+class EmailEditText : AppCompatEditText, View.OnTouchListener {
 
     private lateinit var clearButtonImage: Drawable
 
