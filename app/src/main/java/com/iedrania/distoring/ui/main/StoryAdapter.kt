@@ -20,9 +20,7 @@ class StoryAdapter(private val listStory: List<Story>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val story = listStory[position]
         holder.binding.tvItemName.text = story.name
-        Glide.with(holder.itemView.context)
-            .load(story.photoURL)
-            .into(holder.binding.ivItemPhoto)
+        Glide.with(holder.itemView).load(story.photoUrl).into(holder.binding.ivItemPhoto)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)

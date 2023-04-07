@@ -7,7 +7,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
-    @Headers("Authorization: Bearer <token>")
     @GET("stories")
     fun getStories(): Call<StoryResponse>
 

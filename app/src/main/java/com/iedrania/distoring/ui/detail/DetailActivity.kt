@@ -29,7 +29,7 @@ class DetailActivity : AppCompatActivity() {
             binding.tvDetailDate.text = story.createdAt
             binding.tvDetailName.text = story.name
             Glide.with(this@DetailActivity)
-                .load(story.photoURL)
+                .load(story.photoUrl)
                 .transform(RoundedCorners(32))
                 .into(binding.ivDetailPhoto)
             binding.tvDetailDescription.text = story.description

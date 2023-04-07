@@ -1,23 +1,37 @@
 package com.iedrania.distoring.ui.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iedrania.distoring.R
 import com.iedrania.distoring.data.model.Story
 import com.iedrania.distoring.data.model.StoryResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
+import com.iedrania.distoring.helper.LoginPreferences
+import com.iedrania.distoring.helper.ViewModelFactory
+import com.iedrania.distoring.ui.register.RegisterActivity
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +40,23 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = ""
 
+        val pref = LoginPreferences.getInstance(dataStore)
+        mainViewModel = ViewModelProvider(
+            this, ViewModelFactory(pref)
+        )[MainViewModel::class.java]
+        mainViewModel.getLoginInfo().observe(this) { token ->
+            if (token != "") {
+                findStories(token)
+            }
+        }
+
         val layoutManager = LinearLayoutManager(this)
         binding.rvStories.layoutManager = layoutManager
-        findStories()
     }
 
-    private fun findStories() {
+    private fun findStories(token: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().getStories()
+        val client = ApiConfig.getApiService(token).getStories()
         client.enqueue(object : Callback<StoryResponse> {
             override fun onResponse(
                 call: Call<StoryResponse>, response: Response<StoryResponse>
@@ -46,6 +69,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
+                    Log.e(TAG, "onFailure: $errorMessage")
                 }
             }
 
@@ -72,6 +98,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_logout -> {
+                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
