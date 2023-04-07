@@ -36,6 +36,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     companion object {
         const val EXTRA_STORY = "extra_story"
     }
