@@ -18,6 +18,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         val story = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(EXTRA_STORY, Story::class.java)

@@ -7,4 +7,8 @@
     <string name="email_hint">example@domain.com</string>
     <string name="password_error">Password must be at least 8 characters long.</string>
     <string name="logout">Logout</string>
+    <string name="add_story">Add new story</string>
+    <string name="create_description">Create description</string>
+    <string name="add_photo">Add photo</string>
+    <string name="upload_story">Upload story</string>
 </resources>

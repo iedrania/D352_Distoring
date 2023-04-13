@@ -20,6 +20,7 @@ import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
+import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 import org.json.JSONObject
 import retrofit2.Call
@@ -55,6 +56,11 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvStories.layoutManager = layoutManager
+
+        binding.fab.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun findStories(token: String) {

@@ -37,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         setLoginButtonEnable()
 
         binding.edLoginEmail.addTextChangedListener(object : TextWatcher {
