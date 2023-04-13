@@ -20,7 +20,7 @@ import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
-import com.iedrania.distoring.ui.register.RegisterActivity
+import com.iedrania.distoring.ui.login.LoginActivity
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getLoginInfo().observe(this) { token ->
             if (token != "") {
                 findStories(token)
+            } else {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -103,8 +106,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_logout -> {
-                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                startActivity(intent)
+                mainViewModel.saveLoginInfo("")
             }
         }
         return super.onOptionsItemSelected(item)

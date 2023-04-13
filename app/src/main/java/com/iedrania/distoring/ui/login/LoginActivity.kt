@@ -19,6 +19,7 @@ import com.iedrania.distoring.data.model.LoginResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityLoginBinding
 import com.iedrania.distoring.ui.main.MainActivity
+import com.iedrania.distoring.ui.main.MainViewModel
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +30,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +68,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val pref = LoginPreferences.getInstance(dataStore)
-        loginViewModel = ViewModelProvider(
+        mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
-        )[LoginViewModel::class.java]
-        loginViewModel.getLoginInfo().observe(this) { token ->
+        )[MainViewModel::class.java]
+        mainViewModel.getLoginInfo().observe(this) { token ->
             if (token != "") {
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
@@ -88,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
-                    loginViewModel.saveLoginInfo(responseBody.loginResult.token)
+                    mainViewModel.saveLoginInfo(responseBody.loginResult.token)
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                     val errorBody = response.errorBody()?.string()
