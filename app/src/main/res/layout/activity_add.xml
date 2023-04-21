@@ -1,96 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.add.AddActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_add_photo_title"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/quicksand_light"
-        android:gravity="start"
-        android:text="@string/add_photo"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context=".ui.add.AddActivity">
 
-    <Button
-        android:id="@+id/btn_add_camera"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/quicksand_light"
-        android:gravity="start"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:textSize="14sp"
-        app:cornerRadius="30dp"
-        app:icon="@drawable/baseline_photo_camera_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_photo_title" />
+        <TextView
+            android:id="@+id/tv_add_photo_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/quicksand_light"
+            android:gravity="start"
+            android:text="@string/add_photo"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_add_gallery"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        app:cornerRadius="30dp"
-        app:icon="@drawable/baseline_insert_photo_24"
-        app:layout_constraintStart_toEndOf="@+id/btn_add_camera"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_photo_title" />
+        <ImageView
+            android:id="@+id/iv_add_photo_preview"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/story_photo"
+            android:src="@drawable/baseline_insert_photo_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_add_photo_title" />
 
-    <TextView
-        android:id="@+id/tv_add_desc_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/create_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_add_camera" />
+        <Button
+            android:id="@+id/btn_add_camera"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/take_picture"
+            android:fontFamily="@font/quicksand_light"
+            android:gravity="start"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:textSize="14sp"
+            app:cornerRadius="30dp"
+            app:icon="@drawable/baseline_photo_camera_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_add_photo_preview" />
 
-    <EditText
-        android:id="@+id/ed_add_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/quicksand_regular"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_desc_title" />
+        <Button
+            android:id="@+id/btn_add_gallery"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/choose_from_gallery"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:cornerRadius="30dp"
+            app:icon="@drawable/baseline_insert_photo_24"
+            app:layout_constraintStart_toEndOf="@+id/btn_add_camera"
+            app:layout_constraintTop_toBottomOf="@+id/iv_add_photo_preview" />
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/upload_story"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_add_desc" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_add_description_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/create_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_camera" />
+
+        <EditText
+            android:id="@+id/ed_add_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:hint="@string/add_story_description"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_add_description_title" />
+
+        <Button
+            android:id="@+id/btn_add_upload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/upload_story"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ed_add_description" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

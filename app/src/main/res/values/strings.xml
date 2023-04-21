@@ -11,4 +11,9 @@
     <string name="create_description">Create description</string>
     <string name="add_photo">Add photo</string>
     <string name="upload_story">Upload story</string>
+    <string name="take_picture">Take picture</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="add_story_description">Add story description</string>
+    <string name="story_photo">Story photo</string>
 </resources>
