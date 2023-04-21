@@ -87,7 +87,7 @@ class RegisterActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
             }
         })
-        binding.registerButton.setOnClickListener {
+        binding.btnRegisterSubmit.setOnClickListener {
             postRegister(
                 binding.edRegisterName.text.toString(),
                 binding.edRegisterEmail.text.toString(),
@@ -168,7 +168,7 @@ class RegisterActivity : AppCompatActivity() {
         val nameResult = binding.edRegisterName.text
         val emailResult = binding.edRegisterEmail.text
         val passwordResult = binding.edRegisterPassword.text
-        binding.registerButton.isEnabled = nameResult != null && nameResult.toString()
+        binding.btnRegisterSubmit.isEnabled = nameResult != null && nameResult.toString()
             .isNotBlank() && emailResult != null && emailResult.toString()
             .isNotBlank() && passwordResult != null && passwordResult.toString()
             .isNotBlank() && passwordResult.toString().length >= 8

@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {
             }
         })
-        binding.loginButton.setOnClickListener {
+        binding.btnLoginSubmit.setOnClickListener {
             postLogin(binding.edLoginEmail.text.toString(), binding.edLoginPassword.text.toString())
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
@@ -125,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setLoginButtonEnable() {
         val emailResult = binding.edLoginEmail.text
         val passwordResult = binding.edLoginPassword.text
-        binding.loginButton.isEnabled = emailResult != null && emailResult.toString()
+        binding.btnLoginSubmit.isEnabled = emailResult != null && emailResult.toString()
             .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
     }
 
