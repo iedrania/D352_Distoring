@@ -14,11 +14,14 @@ import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
 import com.iedrania.distoring.ui.login.LoginActivity
 import com.iedrania.distoring.ui.main.MainActivity
-import com.iedrania.distoring.ui.main.MainViewModel
+import com.iedrania.distoring.ui.MainViewModel
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
 class SplashActivity : AppCompatActivity() {
+
+    private lateinit var intent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -29,10 +32,8 @@ class SplashActivity : AppCompatActivity() {
         val mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
         )[MainViewModel::class.java]
-
-        var intent: Intent? = null
-        mainViewModel.getLoginInfo().observe(this) { token ->
-            intent = if (!token.isNullOrEmpty()) {
+        mainViewModel.getSessionInfo().observe(this) {
+            intent = if (it) {
                 (Intent(this@SplashActivity, MainActivity::class.java))
             } else {
                 (Intent(this@SplashActivity, LoginActivity::class.java))

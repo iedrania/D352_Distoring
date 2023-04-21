@@ -1,5 +1,6 @@
 package com.iedrania.distoring.ui.camera
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,9 +14,19 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import com.iedrania.distoring.databinding.ActivityCameraBinding
+import com.iedrania.distoring.helper.LoginPreferences
+import com.iedrania.distoring.helper.ViewModelFactory
 import com.iedrania.distoring.helper.createFile
+import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.add.AddActivity
+import com.iedrania.distoring.ui.login.LoginActivity
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
@@ -27,10 +38,22 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val pref = LoginPreferences.getInstance(dataStore)
+        val mainViewModel = ViewModelProvider(
+            this, ViewModelFactory(pref)
+        )[MainViewModel::class.java]
+        mainViewModel.getSessionInfo().observe(this) {
+            if (!it) {
+                val intent = Intent(this@CameraActivity, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
         binding.ivCameraCapture.setOnClickListener { takePhoto() }
         binding.ivCameraSwitch.setOnClickListener {
-            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-            else CameraSelector.DEFAULT_BACK_CAMERA
+            cameraSelector =
+                if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
+                else CameraSelector.DEFAULT_BACK_CAMERA
             startCamera()
         }
     }
@@ -53,9 +76,7 @@ class CameraActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Toast.makeText(
-                        this@CameraActivity,
-                        "Gagal mengambil gambar.",
-                        Toast.LENGTH_SHORT
+                        this@CameraActivity, "Gagal mengambil gambar.", Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -63,25 +84,21 @@ class CameraActivity : AppCompatActivity() {
                     val intent = Intent()
                     intent.putExtra("picture", photoFile)
                     intent.putExtra(
-                        "isBackCamera",
-                        cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
+                        "isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
                     )
                     setResult(AddActivity.CAMERA_X_RESULT, intent)
                     finish()
                 }
-            }
+            },
         )
     }
 
     private fun startCamera() {
-
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
+            val preview = Preview.Builder().build().also {
                     it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
 
@@ -90,17 +107,12 @@ class CameraActivity : AppCompatActivity() {
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
-                    this,
-                    cameraSelector,
-                    preview,
-                    imageCapture
+                    this, cameraSelector, preview, imageCapture
                 )
 
             } catch (exc: Exception) {
                 Toast.makeText(
-                    this@CameraActivity,
-                    "Gagal memunculkan kamera.",
-                    Toast.LENGTH_SHORT
+                    this@CameraActivity, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT
                 ).show()
             }
         }, ContextCompat.getMainExecutor(this))

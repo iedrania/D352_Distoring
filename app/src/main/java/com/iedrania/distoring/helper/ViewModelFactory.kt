@@ -2,7 +2,7 @@ package com.iedrania.distoring.helper
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.iedrania.distoring.ui.main.MainViewModel
+import com.iedrania.distoring.ui.MainViewModel
 
 class ViewModelFactory(private val pref: LoginPreferences) :
     ViewModelProvider.NewInstanceFactory() {

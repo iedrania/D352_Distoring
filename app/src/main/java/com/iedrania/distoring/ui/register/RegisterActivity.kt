@@ -9,18 +9,30 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.iedrania.distoring.data.model.LoginResponse
 import com.iedrania.distoring.data.model.RegisterResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityRegisterBinding
+import com.iedrania.distoring.helper.LoginPreferences
+import com.iedrania.distoring.helper.ViewModelFactory
+import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.login.LoginActivity
+import com.iedrania.distoring.ui.main.MainActivity
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
+
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +40,17 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        val pref = LoginPreferences.getInstance(dataStore)
+        mainViewModel = ViewModelProvider(
+            this, ViewModelFactory(pref)
+        )[MainViewModel::class.java]
+        mainViewModel.getSessionInfo().observe(this) { isLogin ->
+            if (isLogin) {
+                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
         setRegisterButtonEnable()
 
@@ -73,6 +96,11 @@ class RegisterActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
+
+        binding.btnRegisterLogin.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun postRegister(name: String, email: String, password: String) {
@@ -85,8 +113,7 @@ class RegisterActivity : AppCompatActivity() {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
-                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                    startActivity(intent)
+                    postLogin(email, password)
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                     val errorBody = response.errorBody()?.string()
@@ -96,6 +123,33 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun postLogin(email: String, password: String) {
+        showLoading(true)
+        val client = ApiConfig.getApiService("").postLogin(email, password)
+        client.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(
+                call: Call<LoginResponse>, response: Response<LoginResponse>
+            ) {
+                showLoading(false)
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null) {
+                    mainViewModel.saveSessionInfo(true)
+                    mainViewModel.saveLoginInfo(responseBody.loginResult.token)
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
+                    Log.e(TAG, "onFailure: $errorMessage")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 showLoading(false)
                 Log.e(TAG, "onFailure: ${t.message}")
             }

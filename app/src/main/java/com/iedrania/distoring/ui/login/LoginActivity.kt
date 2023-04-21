@@ -19,7 +19,8 @@ import com.iedrania.distoring.data.model.LoginResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityLoginBinding
 import com.iedrania.distoring.ui.main.MainActivity
-import com.iedrania.distoring.ui.main.MainViewModel
+import com.iedrania.distoring.ui.MainViewModel
+import com.iedrania.distoring.ui.register.RegisterActivity
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +39,17 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        val pref = LoginPreferences.getInstance(dataStore)
+        mainViewModel = ViewModelProvider(
+            this, ViewModelFactory(pref)
+        )[MainViewModel::class.java]
+        mainViewModel.getSessionInfo().observe(this) { isLogin ->
+            if (isLogin) {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
         setLoginButtonEnable()
 
@@ -69,15 +81,9 @@ class LoginActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
-        val pref = LoginPreferences.getInstance(dataStore)
-        mainViewModel = ViewModelProvider(
-            this, ViewModelFactory(pref)
-        )[MainViewModel::class.java]
-        mainViewModel.getLoginInfo().observe(this) { token ->
-            if (token != "") {
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-            }
+        binding.btnLoginRegister.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -91,6 +97,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
+                    mainViewModel.saveSessionInfo(true)
                     mainViewModel.saveLoginInfo(responseBody.loginResult.token)
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")

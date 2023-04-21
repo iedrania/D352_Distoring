@@ -20,6 +20,7 @@ import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
+import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 import org.json.JSONObject
@@ -45,9 +46,11 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
         )[MainViewModel::class.java]
-        mainViewModel.getLoginInfo().observe(this) { token ->
-            if (token != "") {
-                findStories(token)
+        mainViewModel.getSessionInfo().observe(this) { isLogin ->
+            if (isLogin) {
+                mainViewModel.getLoginInfo().observe(this) {
+                    findStories(it)
+                }
             } else {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
@@ -112,6 +115,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_logout -> {
+                mainViewModel.saveSessionInfo(false)
                 mainViewModel.saveLoginInfo("")
             }
         }

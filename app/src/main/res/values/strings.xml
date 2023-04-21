@@ -16,4 +16,6 @@
     <string name="choose_from_gallery">Choose from gallery</string>
     <string name="add_story_description">Add story description</string>
     <string name="story_photo">Story photo</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 </resources>

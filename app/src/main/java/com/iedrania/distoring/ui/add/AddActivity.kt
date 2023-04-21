@@ -25,7 +25,7 @@ import com.iedrania.distoring.helper.reduceFileImage
 import com.iedrania.distoring.helper.rotateFile
 import com.iedrania.distoring.ui.camera.CameraActivity
 import com.iedrania.distoring.ui.login.LoginActivity
-import com.iedrania.distoring.ui.main.MainViewModel
+import com.iedrania.distoring.ui.MainViewModel
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -41,8 +41,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
-    private lateinit var mainViewModel: MainViewModel
-    private lateinit var authToken: String
+    private lateinit var token: String
     private var getFile: File? = null
 
     override fun onRequestPermissionsResult(
@@ -78,12 +77,14 @@ class AddActivity : AppCompatActivity() {
         }
 
         val pref = LoginPreferences.getInstance(dataStore)
-        mainViewModel = ViewModelProvider(
+        val mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
         )[MainViewModel::class.java]
-        mainViewModel.getLoginInfo().observe(this) { token ->
-            if (!token.isNullOrEmpty()) {
-                authToken = token
+        mainViewModel.getSessionInfo().observe(this) { isLogin ->
+            if (isLogin) {
+                mainViewModel.getLoginInfo().observe(this) {
+                    token = it
+                }
             } else {
                 val intent = Intent(this@AddActivity, LoginActivity::class.java)
                 startActivity(intent)
@@ -114,8 +115,7 @@ class AddActivity : AppCompatActivity() {
                 "photo", file.name, requestImageFile
             )
 
-            val service =
-                ApiConfig.getApiService(authToken).uploadStory(imageMultipart, description)
+            val service = ApiConfig.getApiService(token).uploadStory(imageMultipart, description)
             service.enqueue(object : Callback<StoryUploadResponse> {
                 override fun onResponse(
                     call: Call<StoryUploadResponse>, response: Response<StoryUploadResponse>
