@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
         var intent: Intent? = null
         mainViewModel.getLoginInfo().observe(this) { token ->
-            intent = if (token != "") {
+            intent = if (!token.isNullOrEmpty()) {
                 (Intent(this@SplashActivity, MainActivity::class.java))
             } else {
                 (Intent(this@SplashActivity, LoginActivity::class.java))
