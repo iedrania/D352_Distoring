@@ -17,6 +17,8 @@ import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
 import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.login.LoginActivity
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -51,11 +53,15 @@ class DetailActivity : AppCompatActivity() {
         }
 
         if (story != null) {
-            binding.tvDetailDate.text = story.createdAt
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.getDefault())
+            val date = inputFormat.parse(story.createdAt)
+            binding.tvDetailDate.text = outputFormat.format(date!!)
+
             binding.tvDetailName.text = story.name
             Glide.with(this@DetailActivity)
                 .load(story.photoUrl)
-                .transform(RoundedCorners(32))
+                .transform(RoundedCorners(64))
                 .into(binding.ivDetailPhoto)
             binding.tvDetailDescription.text = story.description
         }
