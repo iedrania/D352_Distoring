@@ -1,22 +1,28 @@
 <resources>
-    <string name="app_name">Distoring</string>
+    <string name="app_name" translatable="false">Distoring</string>
+    <string name="distoring_logo">Distoring logo</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="name_hint">Jane Doe</string>
-    <string name="password_hint">********</string>
-    <string name="email_hint">example@domain.com</string>
-    <string name="password_error">Password must be at least 8 characters long.</string>
     <string name="logout">Logout</string>
+    <string name="name_hint" translatable="false">Jane Doe</string>
+    <string name="password_hint" translatable="false">********</string>
+    <string name="email_hint" translatable="false">example@domain.com</string>
+    <string name="password_error">Password must be at least 8 characters long</string>
+    <string name="account_already">Already have an account?</string>
+    <string name="account_not_yet">Don\'t have an account?</string>
     <string name="add_story">Add new story</string>
-    <string name="create_description">Create description</string>
-    <string name="add_photo">Add photo</string>
     <string name="upload_story">Upload story</string>
+    <string name="create_description">Create description</string>
+    <string name="add_story_description">Add story description</string>
+    <string name="add_photo">Add photo</string>
+    <string name="story_photo">Story photo</string>
     <string name="take_picture">Take picture</string>
     <string name="switch_camera">Switch camera</string>
+    <string name="camera_no_perm">Permission is needed to take a picture</string>
+    <string name="retrofit_fail">Retrofit instance failed</string>
+    <string name="take_picture_fail">Taking picture failed</string>
+    <string name="camera_fail">Camera initiation failed</string>
     <string name="choose_from_gallery">Choose from gallery</string>
-    <string name="add_story_description">Add story description</string>
-    <string name="story_photo">Story photo</string>
-    <string name="already_have_an_account">Already have an account?</string>
-    <string name="don_t_have_an_account">Don\'t have an account?</string>
-    <string name="distoring_logo">Distoring logo</string>
+    <string name="no_image_file">Please add picture file to upload</string>
+    <string name="feature_unavailable">This feature is not available yet</string>
 </resources>

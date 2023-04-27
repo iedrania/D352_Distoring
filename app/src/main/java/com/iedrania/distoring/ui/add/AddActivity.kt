@@ -16,6 +16,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.iedrania.distoring.R
 import com.iedrania.distoring.data.model.StoryUploadResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityAddBinding
@@ -51,7 +52,7 @@ class AddActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
-                    this, "Tidak mendapatkan permission.", Toast.LENGTH_SHORT
+                    this, getString(R.string.camera_no_perm), Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -103,7 +104,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun startGallery() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.feature_unavailable), Toast.LENGTH_SHORT).show()
     }
 
     private fun uploadImage() {
@@ -136,15 +137,14 @@ class AddActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<StoryUploadResponse>, t: Throwable) {
-                    Toast.makeText(this@AddActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        this@AddActivity, getString(R.string.retrofit_fail), Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
         } else {
             Toast.makeText(
-                this@AddActivity,
-                "Silakan masukkan berkas gambar terlebih dahulu.",
-                Toast.LENGTH_SHORT
+                this@AddActivity, getString(R.string.no_image_file), Toast.LENGTH_SHORT
             ).show()
         }
     }

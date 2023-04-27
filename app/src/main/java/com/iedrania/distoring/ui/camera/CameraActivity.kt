@@ -18,6 +18,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.iedrania.distoring.R
 import com.iedrania.distoring.databinding.ActivityCameraBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
@@ -77,7 +78,9 @@ class CameraActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Toast.makeText(
-                        this@CameraActivity, "Gagal mengambil gambar.", Toast.LENGTH_SHORT
+                        this@CameraActivity,
+                        getString(R.string.take_picture_fail),
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -113,7 +116,7 @@ class CameraActivity : AppCompatActivity() {
 
             } catch (exc: Exception) {
                 Toast.makeText(
-                    this@CameraActivity, "Gagal memunculkan kamera.", Toast.LENGTH_SHORT
+                    this@CameraActivity, getString(R.string.camera_fail), Toast.LENGTH_SHORT
                 ).show()
             }
         }, ContextCompat.getMainExecutor(this))

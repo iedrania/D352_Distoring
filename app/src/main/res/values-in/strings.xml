@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="distoring_logo">logo Distoring</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="logout">Keluar</string>
+    <string name="password_error">Password minimal mengandung 8 karakter</string>
+    <string name="account_already">Sudah memiliki akun?</string>
+    <string name="account_not_yet">Belum memiliki akun?</string>
+    <string name="add_story">Tambahkan cerita baru</string>
+    <string name="upload_story">Unggah cerita</string>
+    <string name="create_description">Buat deskripsi</string>
+    <string name="add_story_description">Tambahkan deskripsi cerita</string>
+    <string name="add_photo">Tambahkan foto</string>
+    <string name="story_photo">Foto cerita</string>
+    <string name="take_picture">Ambil gambar</string>
+    <string name="switch_camera">Ganti kamera</string>
+    <string name="camera_no_perm">Izin dibutuhkan untuk mengambil gambar</string>
+    <string name="retrofit_fail">Instance Retrofit gagal</string>
+    <string name="take_picture_fail">Pengambilan gambar gagal</string>
+    <string name="camera_fail">Gagal memunculkan kamera</string>
+    <string name="choose_from_gallery">Pilih dari galeri</string>
+    <string name="no_image_file">Silakan masukkan berkas gambar terlebih dahulu</string>
+    <string name="feature_unavailable">Fitur ini belum tersedia</string>
+</resources>
