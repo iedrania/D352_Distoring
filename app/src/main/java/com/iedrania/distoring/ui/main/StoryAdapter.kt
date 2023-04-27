@@ -1,8 +1,11 @@
 package com.iedrania.distoring.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iedrania.distoring.data.model.Story
@@ -25,7 +28,14 @@ class StoryAdapter(private val listStory: List<Story>) :
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
             intent.putExtra("extra_story", story)
-            holder.itemView.context.startActivity(intent)
+
+            val optionsCompat: ActivityOptionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    holder.itemView.context as Activity,
+                    Pair(holder.binding.ivItemPhoto, "photo"),
+                    Pair(holder.binding.tvItemName, "name"),
+                )
+            holder.itemView.context.startActivity(intent, optionsCompat.toBundle())
         }
     }
 
