@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -119,6 +120,9 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.saveSessionInfo(false)
                 mainViewModel.saveLoginInfo("")
                 finish()
+            }
+            R.id.action_settings -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
             }
         }
         return super.onOptionsItemSelected(item)

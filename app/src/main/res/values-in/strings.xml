@@ -22,4 +22,5 @@
     <string name="choose_from_gallery">Pilih dari galeri</string>
     <string name="no_image_file">Silakan masukkan berkas gambar terlebih dahulu</string>
     <string name="feature_unavailable">Fitur ini belum tersedia</string>
+    <string name="settings">Pengaturan</string>
 </resources>
