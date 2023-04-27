@@ -49,6 +49,7 @@ class RegisterActivity : AppCompatActivity() {
             if (isLogin) {
                 val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -97,10 +98,7 @@ class RegisterActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
-        binding.btnRegisterLogin.setOnClickListener {
-            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-            startActivity(intent)
-        }
+        binding.btnRegisterLogin.setOnClickListener { finish() }
     }
 
     private fun postRegister(name: String, email: String, password: String) {

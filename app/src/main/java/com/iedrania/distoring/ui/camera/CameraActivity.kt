@@ -46,6 +46,7 @@ class CameraActivity : AppCompatActivity() {
             if (!it) {
                 val intent = Intent(this@CameraActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -99,8 +100,8 @@ class CameraActivity : AppCompatActivity() {
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
+                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            }
 
             imageCapture = ImageCapture.Builder().build()
 

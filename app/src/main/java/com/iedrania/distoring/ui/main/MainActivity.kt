@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_logout -> {
                 mainViewModel.saveSessionInfo(false)
                 mainViewModel.saveLoginInfo("")
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -88,6 +88,7 @@ class AddActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this@AddActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -127,6 +128,7 @@ class AddActivity : AppCompatActivity() {
                                 this@AddActivity, responseBody.message, Toast.LENGTH_SHORT
                             ).show()
                         }
+                        finish()
                     } else {
                         Toast.makeText(this@AddActivity, response.message(), Toast.LENGTH_SHORT)
                             .show()

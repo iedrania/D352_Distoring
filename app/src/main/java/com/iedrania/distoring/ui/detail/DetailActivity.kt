@@ -40,6 +40,7 @@ class DetailActivity : AppCompatActivity() {
             if (!it) {
                 val intent = Intent(this@DetailActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
