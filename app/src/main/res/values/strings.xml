@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">Distoring</string>
     <string name="distoring_logo">Distoring logo</string>
+    <string name="settings">Settings</string>
+
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="logout">Logout</string>
@@ -10,20 +12,27 @@
     <string name="password_error">Password must be at least 8 characters long</string>
     <string name="account_already">Already have an account?</string>
     <string name="account_not_yet">Don\'t have an account?</string>
+
     <string name="add_story">Add new story</string>
-    <string name="upload_story">Upload story</string>
     <string name="create_description">Create description</string>
     <string name="add_story_description">Add story description</string>
+    <string name="upload_story">Upload story</string>
+    <string name="story_posted">Story posted</string>
+
     <string name="add_photo">Add photo</string>
     <string name="story_photo">Story photo</string>
     <string name="take_picture">Take picture</string>
     <string name="switch_camera">Switch camera</string>
     <string name="camera_no_perm">Permission is needed to take a picture</string>
-    <string name="retrofit_fail">Retrofit instance failed</string>
     <string name="take_picture_fail">Taking picture failed</string>
     <string name="camera_fail">Camera initiation failed</string>
     <string name="choose_from_gallery">Choose from gallery</string>
-    <string name="no_image_file">Please add picture file to upload</string>
-    <string name="settings">Settings</string>
     <string name="choose_picture">Choose a Picture</string>
+    <string name="no_image_file">Please add picture file to upload</string>
+
+    <string name="retrofit_fail">Internet connection failed</string>
+    <string name="post_story_failed">Please add description to upload</string>
+    <string name="find_stories_failed">Get stories failed</string>
+    <string name="login_failed">Login failed, please recheck email and password</string>
+    <string name="register_failed">Register failed, please recheck credentials</string>
 </resources>

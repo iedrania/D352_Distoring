@@ -8,10 +8,11 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
@@ -19,21 +20,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.iedrania.distoring.R
-import com.iedrania.distoring.data.model.StoryUploadResponse
-import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityAddBinding
 import com.iedrania.distoring.helper.*
+import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.camera.CameraActivity
 import com.iedrania.distoring.ui.login.LoginActivity
-import com.iedrania.distoring.ui.MainViewModel
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
@@ -41,6 +32,8 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
+    private lateinit var mainViewModel: MainViewModel
+
     private lateinit var token: String
     private var getFile: File? = null
 
@@ -77,7 +70,7 @@ class AddActivity : AppCompatActivity() {
         }
 
         val pref = LoginPreferences.getInstance(dataStore)
-        val mainViewModel = ViewModelProvider(
+        mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
         )[MainViewModel::class.java]
         mainViewModel.getSessionInfo().observe(this) { isLogin ->
@@ -91,6 +84,10 @@ class AddActivity : AppCompatActivity() {
                 finish()
             }
         }
+        mainViewModel.isLoading.observe(this) { showLoading(it) }
+        mainViewModel.isError.observe(this) { showError(it) }
+        mainViewModel.isFail.observe(this) { showFailure(it) }
+        mainViewModel.isSuccess.observe(this) { showSuccess(it) }
 
         binding.btnAddCamera.setOnClickListener { startCameraX() }
         binding.btnAddGallery.setOnClickListener { startGallery() }
@@ -113,38 +110,8 @@ class AddActivity : AppCompatActivity() {
     private fun uploadImage() {
         if (getFile != null) {
             val file = reduceFileImage(getFile as File)
-            val description =
-                binding.edAddDescription.text.toString().toRequestBody("text/plain".toMediaType())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo", file.name, requestImageFile
-            )
-
-            val service = ApiConfig.getApiService(token).uploadStory(imageMultipart, description)
-            service.enqueue(object : Callback<StoryUploadResponse> {
-                override fun onResponse(
-                    call: Call<StoryUploadResponse>, response: Response<StoryUploadResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        if (responseBody != null && !responseBody.error) {
-                            Toast.makeText(
-                                this@AddActivity, responseBody.message, Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        finish()
-                    } else {
-                        Toast.makeText(this@AddActivity, response.message(), Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                override fun onFailure(call: Call<StoryUploadResponse>, t: Throwable) {
-                    Toast.makeText(
-                        this@AddActivity, getString(R.string.retrofit_fail), Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            val description = binding.edAddDescription.text.toString()
+            mainViewModel.postStory(token, file, description)
         } else {
             Toast.makeText(
                 this@AddActivity, getString(R.string.no_image_file), Toast.LENGTH_SHORT
@@ -162,7 +129,10 @@ class AddActivity : AppCompatActivity() {
                 @Suppress("DEPRECATION") it.data?.getSerializableExtra("picture")
             } as? File
 
+            val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
+
             myFile?.let { file ->
+                rotateFile(file, isBackCamera)
                 getFile = file
                 binding.ivAddPhotoPreview.setImageBitmap(BitmapFactory.decodeFile(file.path))
             }
@@ -178,6 +148,37 @@ class AddActivity : AppCompatActivity() {
                 getFile = uriToFile(uri, this@AddActivity)
                 binding.ivAddPhotoPreview.setImageURI(uri)
             }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showError(isError: Boolean) {
+        if (isError) {
+            Toast.makeText(
+                this@AddActivity, getString(R.string.post_story_failed), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showFailure(isFail: Boolean) {
+        if (isFail) {
+            Toast.makeText(
+                this@AddActivity, getString(R.string.retrofit_fail), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showSuccess(isSuccess: Boolean) {
+        if (isSuccess) {
+            Toast.makeText(this@AddActivity, getString(R.string.story_posted), Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 

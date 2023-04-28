@@ -2,29 +2,24 @@ package com.iedrania.distoring.ui.login
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.iedrania.distoring.R
+import com.iedrania.distoring.databinding.ActivityLoginBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
-import com.iedrania.distoring.data.model.LoginResponse
-import com.iedrania.distoring.data.retrofit.ApiConfig
-import com.iedrania.distoring.databinding.ActivityLoginBinding
-import com.iedrania.distoring.ui.main.MainActivity
 import com.iedrania.distoring.ui.MainViewModel
+import com.iedrania.distoring.ui.main.MainActivity
 import com.iedrania.distoring.ui.register.RegisterActivity
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -51,6 +46,11 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
         }
+        mainViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+        mainViewModel.isError.observe(this) { showError(it) }
+        mainViewModel.isFail.observe(this) { showFailure(it) }
 
         setLoginButtonEnable()
 
@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
         binding.btnLoginSubmit.setOnClickListener {
-            postLogin(binding.edLoginEmail.text.toString(), binding.edLoginPassword.text.toString())
+            mainViewModel.postLogin(binding.edLoginEmail.text.toString(), binding.edLoginPassword.text.toString())
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
@@ -88,33 +88,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun postLogin(email: String, password: String) {
-        showLoading(true)
-        val client = ApiConfig.getApiService("").postLogin(email, password)
-        client.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(
-                call: Call<LoginResponse>, response: Response<LoginResponse>
-            ) {
-                showLoading(false)
-                val responseBody = response.body()
-                if (response.isSuccessful && responseBody != null) {
-                    mainViewModel.saveSessionInfo(true)
-                    mainViewModel.saveLoginInfo(responseBody.loginResult.token)
-                } else {
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                    val errorBody = response.errorBody()?.string()
-                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
-                    Log.e(TAG, "onFailure: $errorMessage")
-                }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
-    }
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE
@@ -123,14 +96,26 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun showError(isError: Boolean) {
+        if (isError) {
+            Toast.makeText(
+                this@LoginActivity, getString(R.string.login_failed), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showFailure(isFail: Boolean) {
+        if (isFail) {
+            Toast.makeText(
+                this@LoginActivity, getString(R.string.retrofit_fail), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     private fun setLoginButtonEnable() {
         val emailResult = binding.edLoginEmail.text
         val passwordResult = binding.edLoginPassword.text
         binding.btnLoginSubmit.isEnabled = emailResult != null && emailResult.toString()
             .isNotBlank() && passwordResult != null && passwordResult.toString().isNotBlank()
-    }
-
-    companion object {
-        private const val TAG = "LoginActivity"
     }
 }

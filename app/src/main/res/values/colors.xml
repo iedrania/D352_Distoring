@@ -10,5 +10,6 @@
     <color name="pink_500">#D81B60</color>
     <color name="pink_200">#FF8FAF</color>
     <color name="primary">#2d3e50</color>
+    <color name="primary_reverse">#8da6d2</color>
     <color name="bw">#FF000000</color>
 </resources>

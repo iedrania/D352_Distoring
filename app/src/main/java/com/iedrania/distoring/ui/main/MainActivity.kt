@@ -5,10 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -16,18 +16,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iedrania.distoring.R
 import com.iedrania.distoring.data.model.Story
-import com.iedrania.distoring.data.model.StoryResponse
-import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
 import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getSessionInfo().observe(this) { isLogin ->
             if (isLogin) {
                 mainViewModel.getLoginInfo().observe(this) {
-                    findStories(it)
+                    mainViewModel.findStories(it)
                 }
             } else {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -58,6 +52,12 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+        mainViewModel.listStory.observe(this) { stories ->
+            setStoryData(stories)
+        }
+        mainViewModel.isLoading.observe(this) { showLoading(it) }
+        mainViewModel.isError.observe(this) { showError(it) }
+        mainViewModel.isFail.observe(this) { showFailure(it) }
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvStories.layoutManager = layoutManager
@@ -66,34 +66,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun findStories(token: String) {
-        showLoading(true)
-        val client = ApiConfig.getApiService(token).getStories()
-        client.enqueue(object : Callback<StoryResponse> {
-            override fun onResponse(
-                call: Call<StoryResponse>, response: Response<StoryResponse>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        setStoryData(responseBody.listStory)
-                    }
-                } else {
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                    val errorBody = response.errorBody()?.string()
-                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
-                    Log.e(TAG, "onFailure: $errorMessage")
-                }
-            }
-
-            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
     }
 
     private fun setStoryData(listStory: List<Story>) {
@@ -109,6 +81,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showError(isError: Boolean) {
+        if (isError) {
+            Toast.makeText(
+                this@MainActivity, getString(R.string.find_stories_failed), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showFailure(isFail: Boolean) {
+        if (isFail) {
+            Toast.makeText(
+                this@MainActivity, getString(R.string.retrofit_fail), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -117,18 +105,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_logout -> {
-                mainViewModel.saveSessionInfo(false)
                 mainViewModel.saveLoginInfo("")
-                finish()
+                mainViewModel.saveSessionInfo(false)
             }
             R.id.action_settings -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
     }
 }
