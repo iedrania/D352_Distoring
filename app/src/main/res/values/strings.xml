@@ -9,6 +9,7 @@
     <string name="name_hint" translatable="false">Jane Doe</string>
     <string name="password_hint" translatable="false">********</string>
     <string name="email_hint" translatable="false">example@domain.com</string>
+    <string name="email_error">Email format is incorrect</string>
     <string name="password_error">Password must be at least 8 characters long</string>
     <string name="account_already">Already have an account?</string>
     <string name="account_not_yet">Don\'t have an account?</string>

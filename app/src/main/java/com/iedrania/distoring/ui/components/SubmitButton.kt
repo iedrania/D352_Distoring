@@ -33,7 +33,7 @@ class SubmitButton : AppCompatButton {
         super.onDraw(canvas)
         background = if (isEnabled) enabledBackground else disabledBackground
         setTextColor(txtColor)
-        textSize = 12f
+        letterSpacing = 0.1f
         gravity = Gravity.CENTER
     }
 

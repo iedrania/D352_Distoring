@@ -6,6 +6,7 @@
     <string name="login">Masuk</string>
     <string name="register">Daftar</string>
     <string name="logout">Keluar</string>
+    <string name="email_error">Format email tidak sesuai</string>
     <string name="password_error">Password minimal mengandung 8 karakter</string>
     <string name="account_already">Sudah memiliki akun?</string>
     <string name="account_not_yet">Belum memiliki akun?</string>
