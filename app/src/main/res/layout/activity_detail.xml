@@ -34,7 +34,7 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/quicksand_bold"
             android:gravity="start"
-            android:textSize="34sp"
+            android:textSize="24sp"
             android:transitionName="name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
