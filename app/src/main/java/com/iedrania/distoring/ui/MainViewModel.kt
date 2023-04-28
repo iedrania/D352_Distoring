@@ -95,7 +95,6 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
     }
 
     fun findStories(token: String) {
-        _isError.value = false
         _isFail.value = false
         _isLoading.value = true
         val client = ApiConfig.getApiService(token).getStories()
@@ -110,7 +109,6 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
                         _listStory.value = responseBody.listStory
                     }
                 } else {
-                    _isError.value = true
                     Log.e(TAG, "findStories ERROR: ${response.message()}")
                     val errorBody = response.errorBody()?.string()
                     val errorMessage = errorBody?.let { JSONObject(it).getString("message") }

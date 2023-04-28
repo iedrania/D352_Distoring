@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             setStoryData(stories)
         }
         mainViewModel.isLoading.observe(this) { showLoading(it) }
-        mainViewModel.isError.observe(this) { showError(it) }
         mainViewModel.isFail.observe(this) { showFailure(it) }
 
         val layoutManager = LinearLayoutManager(this)
@@ -69,8 +68,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStoryData(listStory: List<Story>) {
-        val adapter = StoryAdapter(listStory)
-        binding.rvStories.adapter = adapter
+        if (listStory.isEmpty()) {
+            binding.tvMainEmpty.visibility = View.VISIBLE
+        } else {
+            binding.tvMainEmpty.visibility = View.GONE
+            val adapter = StoryAdapter(listStory)
+            binding.rvStories.adapter = adapter
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -78,14 +82,6 @@ class MainActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
-        }
-    }
-
-    private fun showError(isError: Boolean) {
-        if (isError) {
-            Toast.makeText(
-                this@MainActivity, getString(R.string.find_stories_failed), Toast.LENGTH_SHORT
-            ).show()
         }
     }
 
@@ -107,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_logout -> {
                 mainViewModel.saveLoginInfo("")
                 mainViewModel.saveSessionInfo(false)
+                finish()
             }
             R.id.action_settings -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))

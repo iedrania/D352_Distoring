@@ -33,7 +33,7 @@
 
     <string name="retrofit_fail">Internet connection failed</string>
     <string name="post_story_failed">Please add description to upload</string>
-    <string name="find_stories_failed">Get stories failed</string>
+    <string name="find_stories_failed">There are no stories.</string>
     <string name="login_failed">Login failed, please recheck email and password</string>
     <string name="register_failed">Register failed, please recheck credentials</string>
 </resources>
