@@ -3,8 +3,10 @@ package com.iedrania.distoring.ui.add
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,10 +22,7 @@ import com.iedrania.distoring.R
 import com.iedrania.distoring.data.model.StoryUploadResponse
 import com.iedrania.distoring.data.retrofit.ApiConfig
 import com.iedrania.distoring.databinding.ActivityAddBinding
-import com.iedrania.distoring.helper.LoginPreferences
-import com.iedrania.distoring.helper.ViewModelFactory
-import com.iedrania.distoring.helper.reduceFileImage
-import com.iedrania.distoring.helper.rotateFile
+import com.iedrania.distoring.helper.*
 import com.iedrania.distoring.ui.camera.CameraActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 import com.iedrania.distoring.ui.MainViewModel
@@ -104,7 +103,11 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun startGallery() {
-        Toast.makeText(this, getString(R.string.feature_unavailable), Toast.LENGTH_SHORT).show()
+        val intent = Intent()
+        intent.action = ACTION_GET_CONTENT
+        intent.type = "image/*"
+        val chooser = Intent.createChooser(intent, getString(R.string.choose_picture))
+        launcherIntentGallery.launch(chooser)
     }
 
     private fun uploadImage() {
@@ -165,6 +168,18 @@ class AddActivity : AppCompatActivity() {
                 rotateFile(file, isBackCamera)
                 getFile = file
                 binding.ivAddPhotoPreview.setImageBitmap(BitmapFactory.decodeFile(file.path))
+            }
+        }
+    }
+
+    private val launcherIntentGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val selectedImg = result.data?.data as Uri
+            selectedImg.let { uri ->
+                getFile = uriToFile(uri, this@AddActivity)
+                binding.ivAddPhotoPreview.setImageURI(uri)
             }
         }
     }
