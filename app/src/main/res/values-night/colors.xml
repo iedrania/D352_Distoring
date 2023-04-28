@@ -3,4 +3,5 @@
     <color name="primary">#8da6d2</color>
     <color name="primary_reverse">#2d3e50</color>
     <color name="bw">#FFFFFFFF</color>
+    <color name="secondary">#FF03DAC5</color>
 </resources>
