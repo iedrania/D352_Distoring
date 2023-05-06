@@ -31,7 +31,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
 
         val pref = LoginPreferences.getInstance(dataStore)
@@ -49,7 +49,6 @@ class DetailActivity : AppCompatActivity() {
         val story = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(EXTRA_STORY, Story::class.java)
         } else {
-            @Suppress("DEPRECATION")
             intent.getParcelableExtra(EXTRA_STORY)
         }
 
@@ -57,7 +56,7 @@ class DetailActivity : AppCompatActivity() {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             val outputFormat = SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.getDefault())
             val date = inputFormat.parse(story.createdAt)
-            binding.tvDetailDate.text = outputFormat.format(date!!)
+            binding.tvDetailDate.text = date?.let { outputFormat.format(it) }
 
             binding.tvDetailName.text = story.name
             Glide.with(this@DetailActivity)

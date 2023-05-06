@@ -10,9 +10,6 @@ import kotlinx.coroutines.flow.map
 
 class LoginPreferences private constructor(private val dataStore: DataStore<Preferences>) {
 
-    private val SESSION_KEY = booleanPreferencesKey("session")
-    private val TOKEN_KEY = stringPreferencesKey("token")
-
     fun getLoginSession(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[SESSION_KEY] ?: false
@@ -40,6 +37,8 @@ class LoginPreferences private constructor(private val dataStore: DataStore<Pref
     companion object {
         @Volatile
         private var INSTANCE: LoginPreferences? = null
+        private val SESSION_KEY = booleanPreferencesKey("session")
+        private val TOKEN_KEY = stringPreferencesKey("token")
 
         fun getInstance(dataStore: DataStore<Preferences>): LoginPreferences {
             return INSTANCE ?: synchronized(this) {

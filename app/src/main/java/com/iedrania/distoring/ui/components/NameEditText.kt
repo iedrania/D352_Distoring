@@ -3,13 +3,12 @@ package com.iedrania.distoring.ui.components
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.iedrania.distoring.R
 
 class NameEditText : AppCompatEditText, View.OnTouchListener {
@@ -40,19 +39,9 @@ class NameEditText : AppCompatEditText, View.OnTouchListener {
             ContextCompat.getDrawable(context, R.drawable.baseline_close_24) as Drawable
         setOnTouchListener(this)
 
-        addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                // Do nothing.
-            }
-        })
+        doOnTextChanged { text, _, _, _ ->
+            if (text.toString().isNotEmpty()) showClearButton() else hideClearButton()
+        }
     }
 
     private fun showClearButton() {

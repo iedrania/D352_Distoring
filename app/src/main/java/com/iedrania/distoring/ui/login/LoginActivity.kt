@@ -3,12 +3,11 @@ package com.iedrania.distoring.ui.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -54,34 +53,19 @@ class LoginActivity : AppCompatActivity() {
 
         setLoginButtonEnable()
 
-        binding.edLoginEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setLoginButtonEnable()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-        binding.edLoginPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setLoginButtonEnable()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
+        binding.edLoginEmail.doOnTextChanged { _, _, _, _ ->
+            setLoginButtonEnable()
+        }
+        binding.edLoginPassword.doOnTextChanged { _, _, _, _ ->
+            setLoginButtonEnable()
+        }
         binding.btnLoginSubmit.setOnClickListener {
-            mainViewModel.postLogin(binding.edLoginEmail.text.toString(), binding.edLoginPassword.text.toString())
+            mainViewModel.postLogin(
+                binding.edLoginEmail.text.toString(), binding.edLoginPassword.text.toString()
+            )
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
-
         binding.btnLoginRegister.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)

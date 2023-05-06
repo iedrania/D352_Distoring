@@ -2,13 +2,12 @@ package com.iedrania.distoring.ui.register
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -53,39 +52,15 @@ class RegisterActivity : AppCompatActivity() {
 
         setRegisterButtonEnable()
 
-        binding.edRegisterName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setRegisterButtonEnable()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-        binding.edRegisterEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setRegisterButtonEnable()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-        binding.edRegisterPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setRegisterButtonEnable()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
+        binding.edRegisterName.doOnTextChanged { _, _, _, _ ->
+            setRegisterButtonEnable()
+        }
+        binding.edRegisterEmail.doOnTextChanged { _, _, _, _ ->
+            setRegisterButtonEnable()
+        }
+        binding.edRegisterPassword.doOnTextChanged { _, _, _, _ ->
+            setRegisterButtonEnable()
+        }
         binding.btnRegisterSubmit.setOnClickListener {
             mainViewModel.postRegister(
                 binding.edRegisterName.text.toString(),
@@ -95,7 +70,6 @@ class RegisterActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
-
         binding.btnRegisterLogin.setOnClickListener { finish() }
     }
 

@@ -60,7 +60,7 @@ class AddActivity : AppCompatActivity() {
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
 
         if (!allPermissionsGranted()) {
@@ -126,7 +126,7 @@ class AddActivity : AppCompatActivity() {
             val myFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.data?.getSerializableExtra("picture", File::class.java)
             } else {
-                @Suppress("DEPRECATION") it.data?.getSerializableExtra("picture")
+                it.data?.getSerializableExtra("picture")
             } as? File
 
             val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
@@ -177,7 +177,8 @@ class AddActivity : AppCompatActivity() {
 
     private fun showSuccess(isSuccess: Boolean) {
         if (isSuccess) {
-            Toast.makeText(this@AddActivity, getString(R.string.story_posted), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AddActivity, getString(R.string.story_posted), Toast.LENGTH_SHORT)
+                .show()
             finish()
         }
     }
