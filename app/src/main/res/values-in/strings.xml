@@ -33,4 +33,6 @@
     <string name="find_stories_failed">Tidak ada cerita.</string>
     <string name="login_failed">Login gagal, periksa kembali email dan kata sandi Anda</string>
     <string name="register_failed">Pendaftaran gagal, periksa kembali isian Anda</string>
+
+    <string name="retry">Coba lagi</string>
 </resources>

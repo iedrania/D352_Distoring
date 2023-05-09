@@ -1,9 +1,6 @@
 package com.iedrania.distoring.data.retrofit
 
-import com.iedrania.distoring.data.model.LoginResponse
-import com.iedrania.distoring.data.model.RegisterResponse
-import com.iedrania.distoring.data.model.StoryResponse
-import com.iedrania.distoring.data.model.PostStoryResponse
+import com.iedrania.distoring.data.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -11,7 +8,11 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET("stories")
-    fun getStories(): Call<StoryResponse>
+    suspend fun getStories(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): StoryResponse
 
     @FormUrlEncoded
     @POST("register")

@@ -25,6 +25,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         val pref = LoginPreferences.getInstance(dataStore)
-        val mainViewModel = ViewModelProvider(
+        mainViewModel = ViewModelProvider(
             this, ViewModelFactory(pref)
         )[MainViewModel::class.java]
         mainViewModel.getSessionInfo().observe(this) {
