@@ -8,7 +8,7 @@ import com.iedrania.distoring.database.StoryDatabase
 object Injection {
     fun provideRepository(context: Context, token: String): StoryRepository {
         val database = StoryDatabase.getDatabase(context)
-        val apiService = ApiConfig.getApiService(token)
-        return StoryRepository(database, apiService)
+        val apiService = ApiConfig.getApiService()
+        return StoryRepository(token, database, apiService)
     }
 }

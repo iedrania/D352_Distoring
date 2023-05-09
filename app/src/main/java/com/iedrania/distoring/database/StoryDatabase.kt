@@ -7,9 +7,7 @@ import androidx.room.RoomDatabase
 import com.iedrania.distoring.data.model.Story
 
 @Database(
-    entities = [Story::class, RemoteKeys::class],
-    version = 3,
-    exportSchema = false
+    entities = [Story::class, RemoteKeys::class], version = 4, exportSchema = false
 )
 abstract class StoryDatabase : RoomDatabase() {
 
@@ -24,12 +22,8 @@ abstract class StoryDatabase : RoomDatabase() {
         fun getDatabase(context: Context): StoryDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    StoryDatabase::class.java, "story_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .also { INSTANCE = it }
+                    context.applicationContext, StoryDatabase::class.java, "story_database"
+                ).fallbackToDestructiveMigration().build().also { INSTANCE = it }
             }
         }
     }

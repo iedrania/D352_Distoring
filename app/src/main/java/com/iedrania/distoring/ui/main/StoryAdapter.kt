@@ -28,7 +28,7 @@ class StoryAdapter : PagingDataAdapter<Story, StoryAdapter.ViewHolder>(DIFF_CALL
         }
     }
 
-    class ViewHolder(private var binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: Story) {
             binding.tvItemName.text = story.name
             Glide.with(itemView).load(story.photoUrl).into(binding.ivItemPhoto)

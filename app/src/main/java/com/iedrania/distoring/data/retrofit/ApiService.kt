@@ -8,10 +8,10 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET("stories")
-    suspend fun getStories(
+    suspend fun getStory(
         @Header("Authorization") token: String,
-        @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("page") page: Int?,
+        @Query("size") size: Int?
     ): StoryResponse
 
     @FormUrlEncoded
@@ -32,6 +32,7 @@ interface ApiService {
     @Multipart
     @POST("stories")
     fun uploadStory(
+        @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
     ): Call<PostStoryResponse>

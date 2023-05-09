@@ -1,10 +1,5 @@
 package com.iedrania.distoring.data
 
-import android.content.Context
-import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -15,11 +10,11 @@ import com.iedrania.distoring.data.retrofit.ApiService
 import com.iedrania.distoring.database.RemoteKeys
 import com.iedrania.distoring.database.StoryDatabase
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
-
 @OptIn(ExperimentalPagingApi::class)
-class StoryRemoteMediator (
-    private val database: StoryDatabase, private val apiService: ApiService
+class StoryRemoteMediator(
+    private val token: String,
+    private val database: StoryDatabase,
+    private val apiService: ApiService
 ) : RemoteMediator<Int, Story>() {
 
     private companion object {
@@ -27,14 +22,12 @@ class StoryRemoteMediator (
     }
 
     override suspend fun initialize(): InitializeAction {
-        Log.d("REMOTEMEDIATOR", "init")
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
         loadType: LoadType, state: PagingState<Int, Story>
     ): MediatorResult {
-        Log.d("REMOTEMEDIATOR", "load")
         val page = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -57,18 +50,10 @@ class StoryRemoteMediator (
         }
 
         try {
-            Log.d("REMOTEMEDIATOR", "try")
-            val token =
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLS1Cc1EtdzdGSHlDR2ZXclkiLCJpYXQiOjE2ODM2MjkzODl9.iYuzV8qG1TdKzBK_E28urib_ne8qaw8nrB1IrRGgkw8"
-            val responseData: List<Story> = try {
-                apiService.getStories("Bearer: $token", page, state.config.pageSize).listStory
-            } catch (e: Exception) {
-                Log.e("REMOTEMEDIATOR", "Exception occurred while fetching data: ${e.message}")
-                emptyList()
-            }
-            Log.d("REMOTEMEDIATOR", "success")
+            val responseData = apiService.getStory("Bearer $token", page, state.config.pageSize)
+            val listStory = responseData.listStory
 
-            val endOfPaginationReached = responseData.isEmpty()
+            val endOfPaginationReached = listStory.isEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -77,11 +62,11 @@ class StoryRemoteMediator (
                 }
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = responseData.map {
+                val keys = listStory.map {
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 database.remoteKeysDao().insertAll(keys)
-                database.storyDao().insertStory(responseData)
+                database.storyDao().insertStory(listStory)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
@@ -108,5 +93,4 @@ class StoryRemoteMediator (
             }
         }
     }
-
 }

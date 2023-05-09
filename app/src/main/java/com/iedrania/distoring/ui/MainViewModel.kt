@@ -37,7 +37,7 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
         _isError.value = false
         _isFail.value = false
         _isLoading.value = true
-        val client = ApiConfig.getApiService("").postRegister(name, email, password)
+        val client = ApiConfig.getApiService().postRegister(name, email, password)
         client.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
                 call: Call<RegisterResponse>, response: Response<RegisterResponse>
@@ -67,7 +67,7 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
         _isError.value = false
         _isFail.value = false
         _isLoading.value = true
-        val client = ApiConfig.getApiService("").postLogin(email, password)
+        val client = ApiConfig.getApiService().postLogin(email, password)
         client.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
                 call: Call<LoginResponse>, response: Response<LoginResponse>
@@ -135,7 +135,7 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
         _isError.value = false
         _isFail.value = false
         _isLoading.value = true
-        val service = ApiConfig.getApiService(token).uploadStory(imageMultipart, description)
+        val service = ApiConfig.getApiService().uploadStory("Bearer $token", imageMultipart, description)
         service.enqueue(object : Callback<PostStoryResponse> {
             override fun onResponse(
                 call: Call<PostStoryResponse>, response: Response<PostStoryResponse>

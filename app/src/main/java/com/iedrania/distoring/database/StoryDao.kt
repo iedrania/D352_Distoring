@@ -10,7 +10,7 @@ import com.iedrania.distoring.data.model.Story
 @Dao
 interface StoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(stories: List<Story>)
+    suspend fun insertStory(story: List<Story>)
 
     @Query("SELECT * FROM story")
     fun getAllStory(): PagingSource<Int, Story>

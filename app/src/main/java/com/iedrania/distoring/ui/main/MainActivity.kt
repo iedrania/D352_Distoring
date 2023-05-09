@@ -3,7 +3,6 @@ package com.iedrania.distoring.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -21,9 +20,9 @@ import com.iedrania.distoring.adapter.LoadingStateAdapter
 import com.iedrania.distoring.databinding.ActivityMainBinding
 import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
-import com.iedrania.distoring.ui.ViewModelFactory2
 import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.StoryViewModel
+import com.iedrania.distoring.ui.ViewModelFactory2
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 
@@ -33,9 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private val storyViewModel: StoryViewModel by viewModels {
-        ViewModelFactory2(this)
-    }
+    private lateinit var storyViewModel: StoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +49,10 @@ class MainActivity : AppCompatActivity() {
             if (isLogin) {
                 mainViewModel.getLoginInfo().observe(this) {
 //                    mainViewModel.findStories(it)
+                    storyViewModel = ViewModelProvider(
+                        this, ViewModelFactory2(it, this)
+                    )[StoryViewModel::class.java]
                     getData()
-                    Log.d("MAIN", it)
                 }
             } else {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
