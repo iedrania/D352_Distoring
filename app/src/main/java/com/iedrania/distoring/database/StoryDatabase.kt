@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.iedrania.distoring.data.model.Story
 
 @Database(
-    entities = [Story::class, RemoteKeys::class], version = 4, exportSchema = false
+    entities = [Story::class, RemoteKeys::class], version = 7, exportSchema = false
 )
 abstract class StoryDatabase : RoomDatabase() {
 

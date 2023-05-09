@@ -37,4 +37,6 @@
     <string name="login_failed">Login failed, please recheck email and password</string>
     <string name="register_failed">Register failed, please recheck credentials</string>
     <string name="retry">Retry</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Maps</string>
 </resources>

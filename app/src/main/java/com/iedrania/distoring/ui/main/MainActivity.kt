@@ -25,6 +25,7 @@ import com.iedrania.distoring.ui.StoryViewModel
 import com.iedrania.distoring.ui.ViewModelFactory2
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
+import com.iedrania.distoring.ui.maps.MapsActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -128,6 +129,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_settings -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+            }
+            R.id.action_maps -> {
+                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

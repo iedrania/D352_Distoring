@@ -94,35 +94,35 @@ class MainViewModel(private val pref: LoginPreferences) : ViewModel() {
         })
     }
 
-//    fun findStories(token: String) {
-//        _isFail.value = false
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService(token).getStory()
-//        client.enqueue(object : Callback<StoryResponse> {
-//            override fun onResponse(
-//                call: Call<StoryResponse>, response: Response<StoryResponse>
-//            ) {
-//                _isLoading.value = false
-//                if (response.isSuccessful) {
-//                    val responseBody = response.body()
-//                    if (response.isSuccessful && responseBody != null) {
-//                        _listStory.value = responseBody.listStory
-//                    }
-//                } else {
-//                    Log.e(TAG, "findStories ERROR: ${response.message()}")
-//                    val errorBody = response.errorBody()?.string()
-//                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
-//                    Log.e(TAG, "findStories onError: $errorMessage")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-//                _isLoading.value = false
-//                _isFail.value = true
-//                Log.e(TAG, "findStories onFailure: ${t.message}")
-//            }
-//        })
-//    }
+    fun findStoriesWithLoc(token: String) {
+        _isFail.value = false
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getStoryLoc("Bearer $token")
+        client.enqueue(object : Callback<StoryResponse> {
+            override fun onResponse(
+                call: Call<StoryResponse>, response: Response<StoryResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (response.isSuccessful && responseBody != null) {
+                        _listStory.value = responseBody.listStory
+                    }
+                } else {
+                    Log.e(TAG, "findStoriesWithLoc ERROR: ${response.message()}")
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let { JSONObject(it).getString("message") }
+                    Log.e(TAG, "findStoriesWithLoc onError: $errorMessage")
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
+                _isLoading.value = false
+                _isFail.value = true
+                Log.e(TAG, "findStoriesWithLoc onFailure: ${t.message}")
+            }
+        })
+    }
 
     fun postStory(token: String, file: File, desc: String) {
         val description = desc.toRequestBody("text/plain".toMediaType())
