@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getSessionInfo().observe(this) { isLogin ->
             if (isLogin) {
                 mainViewModel.getLoginInfo().observe(this) {
-//                    mainViewModel.findStories(it)
                     storyViewModel = ViewModelProvider(
                         this, ViewModelFactory(null, it, this)
                     )[StoryViewModel::class.java]
@@ -61,9 +60,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-//        mainViewModel.listStory.observe(this) { stories ->
-//            setStoryData(stories)
-//        }
         mainViewModel.isLoading.observe(this) { showLoading(it) }
         mainViewModel.isFail.observe(this) { showFailure(it) }
 
@@ -75,16 +71,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-//    private fun setStoryData(listStory: List<Story>) {
-//        if (listStory.isEmpty()) {
-//            binding.tvMainEmpty.visibility = View.VISIBLE
-//        } else {
-//            binding.tvMainEmpty.visibility = View.GONE
-//            val adapter = StoryAdapter(listStory)
-//            binding.rvStories.adapter = adapter
-//        }
-//    }
 
     private fun getData() {
         val adapter = StoryAdapter()

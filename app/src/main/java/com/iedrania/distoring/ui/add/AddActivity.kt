@@ -126,6 +126,7 @@ class AddActivity : AppCompatActivity() {
             val myFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.data?.getSerializableExtra("picture", File::class.java)
             } else {
+                @Suppress("DEPRECATION")
                 it.data?.getSerializableExtra("picture")
             } as? File
 

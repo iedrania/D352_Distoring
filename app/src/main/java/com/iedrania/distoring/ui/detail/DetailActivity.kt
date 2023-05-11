@@ -50,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
         val story = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(EXTRA_STORY, Story::class.java)
         } else {
+            @Suppress("DEPRECATION")
             intent.getParcelableExtra(EXTRA_STORY)
         }
 
