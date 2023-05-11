@@ -3,6 +3,8 @@ package com.iedrania.distoring.ui.register
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -103,7 +105,9 @@ class RegisterActivity : AppCompatActivity() {
         val passwordResult = binding.edRegisterPassword.text
         binding.btnRegisterSubmit.isEnabled = nameResult != null && nameResult.toString()
             .isNotBlank() && emailResult != null && emailResult.toString()
-            .isNotBlank() && passwordResult != null && passwordResult.toString()
+            .isNotBlank() && !(TextUtils.isEmpty(emailResult.toString()) || !Patterns.EMAIL_ADDRESS.matcher(
+            emailResult.toString()
+        ).matches()) && passwordResult != null && passwordResult.toString()
             .isNotBlank() && passwordResult.toString().length >= 8
     }
 }
