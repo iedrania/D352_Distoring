@@ -22,7 +22,6 @@ import com.iedrania.distoring.helper.LoginPreferences
 import com.iedrania.distoring.helper.ViewModelFactory
 import com.iedrania.distoring.ui.MainViewModel
 import com.iedrania.distoring.ui.StoryViewModel
-import com.iedrania.distoring.ui.ViewModelFactory2
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 import com.iedrania.distoring.ui.maps.MapsActivity
@@ -45,14 +44,14 @@ class MainActivity : AppCompatActivity() {
 
         val pref = LoginPreferences.getInstance(dataStore)
         mainViewModel = ViewModelProvider(
-            this, ViewModelFactory(pref)
+            this, ViewModelFactory(pref, null, null)
         )[MainViewModel::class.java]
         mainViewModel.getSessionInfo().observe(this) { isLogin ->
             if (isLogin) {
                 mainViewModel.getLoginInfo().observe(this) {
 //                    mainViewModel.findStories(it)
                     storyViewModel = ViewModelProvider(
-                        this, ViewModelFactory2(it, this)
+                        this, ViewModelFactory(null, it, this)
                     )[StoryViewModel::class.java]
                     getData()
                 }

@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
         val pref = LoginPreferences.getInstance(dataStore)
         mainViewModel = ViewModelProvider(
-            this, ViewModelFactory(pref)
+            this, ViewModelFactory(pref, null, null)
         )[MainViewModel::class.java]
         mainViewModel.getSessionInfo().observe(this) { isLogin ->
             if (isLogin) {

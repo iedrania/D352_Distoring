@@ -14,17 +14,3 @@ class StoryViewModel(storyRepository: StoryRepository) : ViewModel() {
     val story: Flow<PagingData<Story>> = storyRepository.getStory().cachedIn(viewModelScope)
 
 }
-
-class ViewModelFactory2(private val token: String?, private val context: Context) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return StoryViewModel(
-                Injection.provideRepository(
-                    context, token ?: ""
-                )
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
