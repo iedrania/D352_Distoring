@@ -7,10 +7,11 @@ import androidx.paging.cachedIn
 import com.iedrania.distoring.data.StoryRepository
 import com.iedrania.distoring.data.model.*
 import com.iedrania.distoring.di.Injection
+import kotlinx.coroutines.flow.Flow
 
 class StoryViewModel(storyRepository: StoryRepository) : ViewModel() {
 
-    val story: LiveData<PagingData<Story>> = storyRepository.getStory().cachedIn(viewModelScope)
+    val story: Flow<PagingData<Story>> = storyRepository.getStory().cachedIn(viewModelScope)
 
 }
 

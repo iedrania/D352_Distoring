@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +13,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iedrania.distoring.R
 import com.iedrania.distoring.adapter.LoadingStateAdapter
@@ -26,6 +26,7 @@ import com.iedrania.distoring.ui.ViewModelFactory2
 import com.iedrania.distoring.ui.add.AddActivity
 import com.iedrania.distoring.ui.login.LoginActivity
 import com.iedrania.distoring.ui.maps.MapsActivity
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
 
@@ -88,14 +89,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getData() {
         val adapter = StoryAdapter()
-        binding.rvStories.adapter = adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter {
-                adapter.retry()
+        binding.rvStories.adapter = adapter.withLoadStateFooter(footer = LoadingStateAdapter {
+            adapter.retry()
+        })
+        lifecycleScope.launch {
+            storyViewModel.story.collect { data ->
+                adapter.submitData(lifecycle, data)
             }
-        )
-        storyViewModel.story.observe(this) {
-            adapter.submitData(lifecycle, it)
-            Log.d("MAIN", "here")
         }
     }
 
